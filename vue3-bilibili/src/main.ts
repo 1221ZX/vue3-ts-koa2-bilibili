@@ -5,6 +5,7 @@ import router from './router/index'
 import mitt from 'mitt'
 import * as API from './api/http';
 
+
 const app = createApp(App);
 
 // 全局注册axios

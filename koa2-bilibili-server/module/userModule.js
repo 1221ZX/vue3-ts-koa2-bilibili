@@ -52,15 +52,11 @@ let user = {
     type: Number,
     required: true
   }
-  // token:{
-  //   type:String,
-  //   required:true
-  // }
 }
 
 
 
 // 用户
-let userModule = mongoose.model('user', new Schema(user))
+let userModule = mongoose.model('users', new Schema(user))
 
 module.exports = userModule ;

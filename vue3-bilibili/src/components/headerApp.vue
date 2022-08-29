@@ -8,7 +8,8 @@
         <van-icon name="search" size="25px" color="#94999e" />
       </div>
       <div @click="user">
-        <img style="width: 25px; height: 25px" src="../assets/images/login.png" />
+        <van-image v-if="userInfo" style="width: 25px; height: 25px" round :src="userInfo.userimg" />
+        <img v-else style="width: 25px; height: 25px" src="../assets/images/login.png" />
       </div>
       <div class="btn">
         <button @click="onDown">下载app</button>
@@ -24,8 +25,9 @@ import { useRouter } from "vue-router";
 let router = useRouter();
 
 // 获取用户个人信息
-let userInfo: object = ref();
+let userInfo = ref();
 
+userInfo.value = JSON.parse(localStorage.getItem('user')!)
 
 
 // 跳转bilibili首页
@@ -41,9 +43,15 @@ function onSearch() {
 }
 
 function user() {
-  router.push({
-    path: "/user",
-  });
+  if (userInfo.value) {
+    router.push({
+      path: "/user",
+    });
+  } else {
+    router.push({
+      path: "/login",
+    });
+  }
 }
 
 function onDown() {

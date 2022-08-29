@@ -23,10 +23,15 @@ let router = useRouter()
 let onSubmit = async () => {
   try {
     let result = await api.login(username.value, password.value)
-    localStorage.setItem('token', result.token)
-    router.push({
-      path:'/'
-    })
+    if (result.code == 400) {
+      alert('不存在该用户')
+    } else {
+      localStorage.setItem('user', JSON.stringify(result.data))
+      router.push({
+        path: '/'
+      })
+    }
+
   } catch (error) {
     throw error
   }

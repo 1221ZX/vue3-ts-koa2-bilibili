@@ -7,6 +7,11 @@ let requests = axios.create({
 
 // 请求拦截
 requests.interceptors.request.use(config => {
+  let token = localStorage.getItem('token')
+  
+  if (token && token != undefined) {
+    config.headers!.Authorization = 'Bearer ' + token
+  }
   return config
 }, error => {
   return Promise.reject(new Error(error))
@@ -17,6 +22,9 @@ requests.interceptors.request.use(config => {
 requests.interceptors.response.use(config => {
   let data = config.data;
 
+  let token = config.headers!.authorization;
+
+  localStorage.setItem('token',token)
   if (data.code >= 200 || data.code <= 300) {
     return Promise.resolve(data)
   }
@@ -24,13 +32,13 @@ requests.interceptors.response.use(config => {
   if (error.response.status) {
     switch (error.response.status) {
       case 404:
-        alert(`请求路径错误,请仔细核对${error}`)
+        console.log(`请求路径错误,请仔细核对${error}`)
         break;
       case 500 || 501 || 502:
-        alert(`内部服务器错误${error}`)
+        console.log(`内部服务器错误${error}`)
         break;
       default:
-        alert(`错误${error}`)
+        console.log(`错误${error}`)
         break;
     }
   }

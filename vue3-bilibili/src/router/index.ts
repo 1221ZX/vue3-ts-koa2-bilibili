@@ -6,7 +6,9 @@ const routes: Array<RouteRecordRaw> = [
   // 视频页面
   { path: '/videoinfo', name: 'videoinfo', component: () => import('../views/Video/index.vue') },
   // 用户页面
-  {path:'/user',component:()=> import('../views/User/index.vue')}
+  {path:'/user',component:()=> import('../views/User/index.vue')},
+  // 用户页面
+  {path:'/login',component:()=> import('../views/Login/index.vue')}
 ]
 
 const router = createRouter({

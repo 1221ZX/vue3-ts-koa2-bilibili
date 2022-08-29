@@ -10,13 +10,23 @@ let loginController = {
     if (username && password) {
       try {
         let result = await loginService.login(username, password);
-        let token = jwt.generate(result);
-        // 响应头中携带token
-        ctx.body = {
-          code: 200,
-          msg: '查询用户成功',
-          data: result,
-          token
+        if (result) {
+          let token = jwt.generate(result);
+          // console.log(token);
+          // body中携带token
+          // ctx.headers.authorization = token
+          ctx.set('authorization', token)
+          ctx.body = {
+            code: 200,
+            msg: '查询用户成功',
+            data: result,
+          }
+        }else{
+          ctx.body = {
+            code: 400,
+            msg: '不存在该数据',
+            data: result,
+          }
         }
       } catch (error) {
         ctx.body = {

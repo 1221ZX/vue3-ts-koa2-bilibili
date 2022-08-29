@@ -10,12 +10,12 @@
       <div class="user-info">
         <div class="fans-pian">
           <div>
-            <span v-if="userInfo?.fans" style="color: #000">{{userInfo?.fans}}</span>
+            <span v-if="userInfo?.fans" style="color: #000">{{ userInfo?.fans }}</span>
             <span v-else style="color: #000">- -</span>
             <span>粉丝</span>
           </div>
           <div>
-            <span v-if="userInfo?.gainpraise" style="color: #000">{{userInfo?.gainpraise}}</span>
+            <span v-if="userInfo?.gainpraise" style="color: #000">{{ userInfo?.gainpraise }}</span>
             <span v-else style="color: #000">- -</span>
             <span>关注</span>
           </div>
@@ -25,17 +25,18 @@
         </div>
       </div>
       <div class="user-message">
-        <div>
-          <span>{{userInfo?.username}}</span>
+        <div class="user-message-son">
+          <span>{{ userInfo?.name }}</span>
+          <button @click="outLogin">退出登录</button>
         </div>
         <div>
-          <span>{{userInfo?.userinfo}}</span>
+          <span>{{ userInfo?.userinfo }}</span>
           <span style="color:#1389bf;font-size: 14px;" @click="unfold">展开</span>
         </div>
       </div>
     </div>
     <!-- tab标签 -->
-    <UserInfoTab/>
+    <UserInfoTab />
   </div>
 </template>
 
@@ -43,8 +44,10 @@
 import HerderApp from '../../components/headerApp.vue'
 import UserInfoTab from '../User/components/userInfoTab.vue'
 import { inject, ref } from 'vue'
+import { useRouter } from "vue-router";
 
-let api: any = inject('$API')
+// let api: any = inject('$API')
+let router = useRouter()
 
 
 interface User {
@@ -57,18 +60,32 @@ interface User {
   userinfo: string    //用户签名
   bcimg: string       //用户首页背景图片
   code: number        //用户权限等级
+  name: string
 }
 let userInfo = ref<User>()
-async function fn() {
-  let res = await api.getuser('6306d16354d2da31b1010340');
-  userInfo.value = res.data
+// async function fn() {
+//   let res = await api.getuser('6306d16354d2da31b1010340');
+//   userInfo.value = res.data
+// }
+// fn()
+userInfo.value = JSON.parse(localStorage.getItem('user')!);
+
+function outLogin() {
+  if (confirm('确定退出账户吗')) {
+    localStorage.removeItem('user')
+    localStorage.removeItem('token')
+    router.push({
+      path: '/'
+    })
+  }else{
+    return false
+  }
+
 }
-fn()
 
 function unfold() {
   alert('123')
 }
-
 
 </script>
 
@@ -156,6 +173,24 @@ function unfold() {
   .user-message {
     height: 75px;
     width: 374px;
+
+    .user-message-son {
+      display: flex;
+      justify-content: space-between;
+
+      button {
+        display: flex;
+        border: none;
+        justify-content: center;
+        align-items: center;
+        width: 70px;
+        height: 30px;
+        background-color: #fb7299;
+        border-radius: 5px;
+        color: #fff;
+        font-size: 12px;
+      }
+    }
   }
 
   .user-message :nth-child(1) {
